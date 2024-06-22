@@ -1,6 +1,6 @@
 import '../App.css';
 import { Link } from 'react-router-dom';
-import { React, Fragment } from 'react';
+import { React, Fragment, useState } from 'react';
 import logo from '../images/LegalAssist-White.png';
 import profile from '../images/profile-icon.png';
 import { Menu, Transition } from '@headlessui/react';
@@ -39,6 +39,7 @@ const content = [
 ];
 
 function TIpsHukum() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   return (
     <div className='container mt-4'>
       {/* Navbar */}
@@ -48,57 +49,87 @@ function TIpsHukum() {
         </Link>
         <div className='flex gap-6'>
           {navigation.map((item) => (
-            <Link key={item} to={item.href} className=''>
+            <Link
+              key={item}
+              to={item.href}
+              className='hover:text-[#FFB800] duration-300'
+            >
               {item.name}
             </Link>
           ))}
         </div>
         <div className='flex gap-4 items-center'>
-          <img src={notification} alt='logo' />
-          {/* Profile Dropdown */}
-          <Menu as='div' className='relative ml-3'>
+          {isLoggedIn ? (
             <div>
-              <Menu.Button className=' flex max-w-xs items-center'>
-                <span className='absolute -inset-1.5' />
-                <span className='sr-only'>Open user menu</span>
-                <img className='h-8 w-8 rounded-full' src={profile} alt='' />
-              </Menu.Button>
-            </div>
-            <Transition
-              as={Fragment}
-              enter='transition ease-out duration-100'
-              enterFrom='transform opacity-0 scale-95'
-              enterTo='transform opacity-100 scale-100'
-              leave='transition ease-in duration-75'
-              leaveFrom='transform opacity-100 scale-100'
-              leaveTo='transform opacity-0 scale-95'
-            >
-              <Menu.Items className='absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none'>
-                {userNavigation.map((item) => (
-                  <Menu.Item key={item.name}>
-                    {({ active }) => (
-                      <a
-                        href={item.href}
-                        className={classNames(
-                          active ? 'bg-gray-100' : '',
-                          'block px-4 py-2 text-sm text-gray-700'
+              <img src={notification} alt='logo' />
+              {/* Profile Dropdown */}
+              <Menu as='div' className='relative ml-3'>
+                <div>
+                  <Menu.Button className=' flex max-w-xs items-center'>
+                    <span className='absolute -inset-1.5' />
+                    <span className='sr-only'>Open user menu</span>
+                    <img
+                      className='h-8 w-8 rounded-full'
+                      src={profile}
+                      alt=''
+                    />
+                  </Menu.Button>
+                </div>
+                <Transition
+                  as={Fragment}
+                  enter='transition ease-out duration-100'
+                  enterFrom='transform opacity-0 scale-95'
+                  enterTo='transform opacity-100 scale-100'
+                  leave='transition ease-in duration-75'
+                  leaveFrom='transform opacity-100 scale-100'
+                  leaveTo='transform opacity-0 scale-95'
+                >
+                  <Menu.Items className='absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none'>
+                    {userNavigation.map((item) => (
+                      <Menu.Item key={item.name}>
+                        {({ active }) => (
+                          <a
+                            href={item.href}
+                            className={classNames(
+                              active ? 'bg-gray-100' : '',
+                              'block px-4 py-2 text-sm text-gray-700'
+                            )}
+                          >
+                            {item.name}
+                          </a>
                         )}
-                      >
-                        {item.name}
-                      </a>
-                    )}
-                  </Menu.Item>
-                ))}
-              </Menu.Items>
-            </Transition>
-          </Menu>
+                      </Menu.Item>
+                    ))}
+                  </Menu.Items>
+                </Transition>
+              </Menu>
+            </div>
+          ) : (
+            <div className='flex gap-2 items-center'>
+              <Link
+                to='/register'
+                className='bg-black text-white  rounded py-1 px-3 '
+              >
+                Masuk
+              </Link>
+              <Link
+                to='/register'
+                className='bg-[#FFB800] text-white py-1 px-3 rounded'
+              >
+                Daftar
+              </Link>
+            </div>
+          )}
         </div>
       </div>
       {/* Content Section */}
-      <div className='flex flex-wrap justify-between mt-[120px]'>
+      <div className='flex flex-wrap justify-between mt-[120px] '>
         {content.map((item) => (
-          <div key={item.imgSrc} className='mb-[40px]'>
-            <img src={item.imgSrc} alt='gambar' className='w-[360px]' />
+          <div
+            key={item.imgSrc}
+            className='mb-[40px] hover:scale-105 transition-all duration-300 hover:cursor-pointer'
+          >
+            <img src={item.imgSrc} alt='gambar' className='w-[440px]' />
           </div>
         ))}
       </div>
